@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 // Configuration de la connexion à la bdd
     $servername = "localhost";
     $username = "root";
@@ -9,7 +9,6 @@
     try {
         $conn = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8", $username,$password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        echo "La connexion a la bdd est réussi";
         $utilisateur = $_POST['utilisateur'];
         $mdp = $_POST['mdp'];
     
@@ -19,11 +18,40 @@
         $stmt->execute();
     
         if ($stmt->rowCount() == 0) {
-            echo "Identifiants incorrects. Veuillez vérifier votre nom d'utilisateur et votre mot de passe.";
-        } else {
-            echo 'Bienvenue ' . $utilisateur;
-        }
-    } catch (PDOException $e) {
+            header("location: inscription.php");
+            exit();
+    }  
+}catch (PDOException $e) {
         echo "Erreur de connexion : " . $e->getMessage();
     }
 ?>
+
+<?php
+    $titrePage = "Connexion";
+?>
+
+<?php 
+
+if (isset($_POST['deconnexion'])) {
+
+    session_unset();
+    session_destroy();
+
+    header("Location: index.php");
+    exit();
+}
+
+?>
+
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <title><?php echo $titrePage;?></title>
+</head>
+<body>
+    <h1 id="Bienvenue">Bienvenue <?php echo $utilisateur;?></h1>
+    <div id="deconnexion">
+    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+        <input type="submit" name="deconnexion" value="Se déconnecter">
+    </form>
+    </div>
+</body>

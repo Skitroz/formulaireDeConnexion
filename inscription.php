@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 // Configuration de la connexion à la bdd
     $servername = "localhost";
     $username = "root";
@@ -9,7 +9,6 @@
     try {
         $conn = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8", $username,$password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        echo "La connexion a la bdd est réussi";
     } catch (PDOException $e) {
         echo "La connexion a echoué:" . $e->getMessage();
     }
@@ -31,3 +30,32 @@
         $stmt->execute();
     }
 ?>
+
+<?php
+    $titreConnexion = "Connexion";
+    $nomUtilisateur = "Non d'utilisateur :";
+    $titrePage = "Connexion";
+    $mdp = "Mot de passe :";
+?>
+<head>
+    <title><?php echo $titrePage;?></title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<form action="connexion.php" method="post" id="form">
+        <h1 id="title"><?php echo $titreConnexion?></h1>
+        <div class="bloc"> 
+            <label for="utilisateur" class="sousTitre"><?php echo $nomUtilisateur?></label>
+            <input type="text" name="utilisateur" placeholder="Skitroz" required>
+        </div>
+        <div class="bloc">
+            <label for="mdp" class="sousTitre"><?php echo $mdp ?></label>
+            <input type="password" name="mdp" placeholder="Kevindu76!" required>
+        </div>
+        <div id="submit">
+            <input type="submit" value="Se connecter" name="envoyer">
+            <p>ou</p>
+        </div>
+    </form>
+    <div id="connexion">
+        <a href="index.php"><button>S'inscrire</button></a>
+        </div>
